@@ -4,7 +4,6 @@ use Illuminate\Database\Console\DbCommand;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +19,7 @@ use Illuminate\Support\Facades\Http;
 // Стартова сторінка
 Route::get('/auto', function () {
     require '../resources/views/libs/app.php';
-    return view('auto.new');
+    return view('new');
 });
 
 
@@ -30,14 +29,14 @@ Route::get('/auto/vin/{vin}', function ($vin) {
 });
 
 
-// Спарсив данні, і переправив додавати заявку
+// Спарсив данні, і переправив додавати запис в БД
 Route::post('/auto/post', function () {
     $post = Request::only('name', 'gos_nomer', 'color', 'vin');
     return view('auto.vin', $post);
 });
 
 
-// Спарсив данні, і переправив додавати заявку
+// Спарсив данні, і переправив додавати запис в БД
 Route::get(
     '/auto/get/{name}/{gos_nomer}/{color}/{vin}',
     function ($name, $gos_nomer, $color, $vin) {
@@ -55,17 +54,17 @@ Route::get(
 
 
 
+
+// Додаю всі данні через GET в базу данних
 Route::get(
     '/auto/get/{name}/{gos_nomer}/{color}/{vin}/{brand}/{model}/{year}',
-    function ($name, $gos_nomer, $color, $vin, $brand, $model, $year) {
+    function ($auto, $name, $gos_nomer, $color, $vin, $brand, $model, $year) {
         $auto = DB::table('auto')->find($gos_nomer);
-        if (!empty($auto->id)) {
-            return 'Уже существует';
-        }
+        return $auto->id;
+
         return view(
             'auto.add',
             [
-                'auto' => $auto,
                 'name' => $name,
                 'gos_nomer' => $gos_nomer,
                 'color' => $color,
