@@ -15,3 +15,5 @@ $api_url = '/'
 
 
     exit(redirect('/auto/get'.$api_url));
+
+    
