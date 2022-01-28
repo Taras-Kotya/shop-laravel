@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Request;
 */
 
 // Стартова сторінка
+Route::get('/', function () {
+    require '../resources/views/libs/app.php';
+    return view('new');
+});
 Route::get('/auto', function () {
     require '../resources/views/libs/app.php';
     return view('new');
@@ -58,22 +62,24 @@ Route::get(
 // Додаю всі данні через GET в базу данних
 Route::get(
     '/auto/get/{name}/{gos_nomer}/{color}/{vin}/{brand}/{model}/{year}',
-    function ($auto, $name, $gos_nomer, $color, $vin, $brand, $model, $year) {
-        $auto = DB::table('auto')->find($gos_nomer);
-        return $auto->id;
-
-        return view(
-            'auto.add',
-            [
-                'name' => $name,
-                'gos_nomer' => $gos_nomer,
-                'color' => $color,
-                'vin' => $vin,
-                'brand' => $brand,
-                'model' => $model,
-                'year' => $year
-            ]
-        );
+    function ($name, $gos_nomer, $color, $vin, $brand, $model, $year) {
+        $id_nomer = DB::table('auto')->where('gos_nomer',$gos_nomer)->value('id');
+        if(!empty($id_nomer)){
+            return 'В базі вже є такий держ.номер авто';
+        } else {
+            return view(
+                'auto.add',
+                [
+                    'name' => $name,
+                    'gos_nomer' => $gos_nomer,
+                    'color' => $color,
+                    'vin' => $vin,
+                    'brand' => $brand,
+                    'model' => $model,
+                    'year' => $year
+                ]
+            );
+        }
     }
 );
 

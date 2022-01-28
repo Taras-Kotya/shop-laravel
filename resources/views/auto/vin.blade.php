@@ -7,8 +7,8 @@ $model = $response['Results'][8]['Value'];
 $year = $response['Results'][9]['Value'];
 
 $api_url = '/'
-    . $name . '/'
-    . $gos_nomer . '/'
+    . htmlspecialchars($name) . '/'
+    . str_replace(" ", '', $gos_nomer) . '/'
     . $color . '/'
     . $vin . '/'
     . $brand . '/'
