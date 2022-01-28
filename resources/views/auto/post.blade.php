@@ -1,0 +1,1 @@
+{{Http::get("https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/" . $vin . "?format=json");}}
